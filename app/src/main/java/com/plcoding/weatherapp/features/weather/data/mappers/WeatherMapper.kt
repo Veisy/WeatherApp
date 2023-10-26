@@ -6,12 +6,6 @@ import com.plcoding.weatherapp.features.weather.domain.model.WeatherInfo
 import com.plcoding.weatherapp.features.weather.domain.model.WeatherType
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-
-private data class IndexedWeatherData(
-    val index: Int,
-    val data: WeatherData
-)
-
 fun WeatherDTO.toWeatherInfo(): WeatherInfo {
     val now = LocalDateTime.now()
     val weatherDataPerDay = with(weatherData) {
