@@ -6,6 +6,7 @@ import com.plcoding.weatherapp.features.weather.domain.model.WeatherInfo
 import com.plcoding.weatherapp.features.weather.domain.model.WeatherType
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+
 fun WeatherDTO.toWeatherInfo(): WeatherInfo {
     val now = LocalDateTime.now()
     val weatherDataPerDay = with(weatherData) {
@@ -20,12 +21,18 @@ fun WeatherDTO.toWeatherInfo(): WeatherInfo {
             )
         }.chunked(24).withIndex().associate { (index, data) -> index to data }
     }
+
+    val todayWeatherData = weatherDataPerDay.values.firstOrNull {
+        it.any { weatherDate ->
+            weatherDate.time.toLocalDate() == now.toLocalDate()
+        }
+    }
+    val hour = if (now.minute < 30 || now.hour >= 23) now.hour else now.hour + 1
     return WeatherInfo(
         weatherDataPerDay = weatherDataPerDay,
-        currentWeatherData = weatherDataPerDay[0]?.find {
-            val hour = if (now.minute < 30) now.hour else now.hour + 1
-            it.time.hour == hour
-        }
+        todayWeatherData = todayWeatherData,
+        currentWeatherData = todayWeatherData?.find { it.time.hour == hour }
     )
 }
+
 

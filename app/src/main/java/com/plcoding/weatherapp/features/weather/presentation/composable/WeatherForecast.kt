@@ -26,7 +26,7 @@ fun WeatherForecast(
 ) {
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
-    state.weatherInfo?.weatherDataPerDay?.get(0)?.let { data ->
+    state.weatherInfo?.todayWeatherData?.let { data ->
         Column(
             modifier = modifier
                 .fillMaxWidth()
